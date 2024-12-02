@@ -1,0 +1,9 @@
+.signup {
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.signupWrap {
+    max-width: 400px;
+}
