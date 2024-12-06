@@ -3,6 +3,7 @@ import "../styles/Home.css";
 import { gsap } from "gsap";
 import { Flip, ScrollTrigger } from "gsap/all";
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(Flip, ScrollTrigger);
 
@@ -186,20 +187,24 @@ function Home() {
             <div className="container mx-auto px-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {planets.map((planet, index) => (
-                  <motion.div
-                    key={planet.name}
-                    initial={{ y: 50, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.2 }}
-                    className="planet-card bg-gray-900 rounded-lg p-6 text-center transform hover:scale-105 transition-transform duration-300"
-                  >
-                    <div className="planet-container" ref={el => planetsRef.current[index] = el}>
-                      <div className="planet" style={{ backgroundColor: planet.color }}></div>
-                    </div>
-                    <h3 className="text-xl font-semibold text-yellow-500 mt-4">{planet.name}</h3>
-                    <p className="text-gray-400 mt-2">{planet.description}</p>
-                  </motion.div>
+                  <Link to={`/${planet.name}`}>
+                    <motion.div
+                      key={planet.name}
+                      initial={{ y: 50, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.2 }}
+                      className="planet-card bg-gray-900 rounded-lg p-6 text-center transform hover:scale-105 transition-transform duration-300"
+                    >
+                      <div className="planet-container" ref={el => planetsRef.current[index] = el}>
+                        <div className="planet" style={{ backgroundColor: planet.color }}></div>
+                      </div>
+                      <h3 className="text-xl font-semibold text-yellow-500 mt-4">
+                        {planet.name}
+                      </h3>
+                      <p className="text-gray-400 mt-2">{planet.description}</p>
+                    </motion.div>
+                  </Link>
                 ))}
               </div>
             </div>

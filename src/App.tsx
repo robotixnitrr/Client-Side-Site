@@ -17,6 +17,9 @@ import PostPage from './pages/PostPage';
 // import OnlyAdmin from './components/OnlyAdmin';
 import PrivateRoute from './components/PrivateRoute';
 import Footer from './components/Footer';
+import EventsPage from './pages/EventsPage';
+import ProjectsPage from './pages/ProjectsPage';
+import WorkshopsPage from './pages/WorkshopsPage';
 
 function App() {
   return (
@@ -28,6 +31,9 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/events" element={<EventsPage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/workshops" element={<WorkshopsPage />} />
               <Route path="/sign-up" element={<Signup />} />
               <Route path="/log-in" element={<Login />} />
               <Route path="/search" element={<Search />}></Route>

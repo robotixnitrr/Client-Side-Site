@@ -42,12 +42,17 @@ export default function CreatePost() {
 
     try {
       const response = await createPost(dataToSend);
-      setPosts([response.data.data, ...posts]);
+      console.log(response);
+      
+      // setPosts([response.data.data, ...posts]);
 
       setSuccess('Post created successfully!');
+      console.log("sucess");
+      
       setError('');
-      setPost({ title: '', content: '', author: '', category: '', imageUrl: '' });
-      navigate(`/post/${response.data.data._id}`);
+      // setPost({ title: '', content: '', author: '', category: '', imageUrl: '' });
+      console.log("sucess1");
+      navigate(`/post/${response.data._id}`);
 
     } catch (error) {
       console.error('Error creating post:', error);
@@ -61,9 +66,9 @@ export default function CreatePost() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(user.userid);
+    // console.log(user.userid);
     let id = user.userid;
-    console.log(id);
+    // console.log(id);
 
     setPost({ ...post, author: id });
 

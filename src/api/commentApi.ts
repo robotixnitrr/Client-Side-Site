@@ -7,6 +7,13 @@ export interface Comment {
   postId: string;
   likes?: number;
   createdAt: string;
+  updatedAt: string;
+}
+
+export interface NewComment {
+  content: string;
+  author: string;
+  postId: string;
 }
 
 export interface ApiResponse<T> {
@@ -16,7 +23,7 @@ export interface ApiResponse<T> {
 
 const API_BASE_URL = 'http://localhost:5000/api/comment';
 
-export const createComment = (commentData: Partial<Comment>) => {
+export const createComment = (commentData: NewComment) => {
   return axios.post<ApiResponse<Comment>>(`${API_BASE_URL}`, commentData);
 };
 

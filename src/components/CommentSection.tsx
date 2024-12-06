@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { createComment, getCommentsForPost, editComment, deleteComment, likeComment, Comment } from '../api/commentApi';
-import { getUser, User } from '../api/userApi';
-// import { useNavigate } from 'react-router-dom';
+import { getUser } from '../api/userApi';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import { FiHeart, FiEdit2, FiTrash2, FiSend } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface CommentSectionProps {
   postId: string;
@@ -25,11 +26,12 @@ export default function CommentSection({ postId }: CommentSectionProps) {
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [updatedComment, setUpdatedComment] = useState<{ content: string }>({ content: '' });
   const [authorNames, setAuthorNames] = useState<AuthorNames>({});
+  console.log(postId);
+
 
   useEffect(() => {
     const fetchAuthorNames = async () => {
       const namesMap = { ...authorNames };
-
       await Promise.all(
         comments.map(async (comment) => {
           if (!namesMap[comment._id]) {
@@ -42,10 +44,8 @@ export default function CommentSection({ postId }: CommentSectionProps) {
           }
         })
       );
-
       setAuthorNames(namesMap);
     };
-
     fetchAuthorNames();
   }, [comments]);
 
@@ -53,25 +53,62 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     getCommentsForPost(postId)
       .then((response) => setComments(response.data.data))
       .catch((error: Error) => console.log(error.message));
+    console.log(comments);
+
   }, [postId]);
 
-  const handleAddComment = (e: React.FormEvent) => {
+  const handleAddComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    createComment({ ...newComment, postId: postId })
-      .then((response) => setComments([...comments, response.data.data]))
-      .catch((error: Error) => console.log(error.message));
+    if (!newComment.content.trim() || !user?.userid) return;
 
-    setNewComment({ content: '', author: user.userid || '' });
+    try {
+      const commentData = {
+        content: newComment.content,
+        author: user.userid,
+        postId: postId
+      };
+
+      const response = await createComment(commentData);
+      console.log("New comment response:", response.data);
+
+      const newlyCreatedComment: Comment = {
+        _id: response.data.data._id,
+        content: response.data.data.content,
+        author: response.data.data.author,
+        postId: response.data.data.postId,
+        createdAt: response.data.data.createdAt,
+        updatedAt: response.data.data.updatedAt,
+        likes: 0
+      };
+
+      setComments(prevComments => [newlyCreatedComment, ...prevComments]);
+
+      setAuthorNames(prev => ({
+        ...prev,
+        [newlyCreatedComment._id]: user.username || 'Unknown'
+      }));
+
+      setNewComment({ content: '', author: user.userid });
+      useEffect(() => {
+        window.location.reload();
+      }, [newComment]);
+    } catch (error) {
+      console.log("error comment", error);
+    }
   };
 
-  const handleLike = (commentId: string) => {
-    likeComment(commentId)
-      .then(() => setComments(
+
+  const handleLike = async (commentId: string) => {
+    try {
+      await likeComment(commentId);
+      setComments(
         comments.map((comment) =>
           comment._id === commentId ? { ...comment, likes: (comment.likes || 0) + 1 } : comment
         )
-      ))
-      .catch((error) => console.log(error));
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleEditComment = (commentId: string, commentContent: string) => {
@@ -79,106 +116,163 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     setUpdatedComment({ content: commentContent });
   };
 
-  const handleUpdateComment = (e: React.FormEvent) => {
+  const handleUpdateComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (editingCommentId) {
-      editComment(editingCommentId, updatedComment)
-        .then((response) => {
-          setComments(
-            comments.map((comment) =>
-              comment._id === editingCommentId ? response.data.data : comment
-            )
-          );
-          setEditingCommentId(null);
-          setUpdatedComment({ content: '' });
-        })
-        .catch((error) => console.log(error));
+    if (!editingCommentId || !updatedComment.content.trim()) return;
+
+    try {
+      const response = await editComment(editingCommentId, updatedComment);
+      setComments(
+        comments.map((comment) =>
+          comment._id === editingCommentId ? response.data.data : comment
+        )
+      );
+      setEditingCommentId(null);
+      setUpdatedComment({ content: '' });
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const handleDeleteComment = (commentId: string) => {
-    deleteComment(commentId)
-      .then(() => setComments(comments.filter((comment) => comment._id !== commentId)))
-      .catch((error) => console.log(error));
+  const handleDeleteComment = async (commentId: string) => {
+    try {
+      await deleteComment(commentId);
+      setComments(comments.filter((comment) => comment._id !== commentId));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div className="space-y-8">
-      <h3 className="text-xl font-bold text-gray-900 dark:text-yellow-500">Comments</h3>
+    <div className="space-y-8 lg:flex justify-around">
+      <div className="textArea lg:w-[40%] flex flex-col gap-4">
 
-      <form onSubmit={handleAddComment} className="space-y-4 bg-gray-100 dark:bg-gray-800 p-5 rounded-lg shadow-md">
-        <textarea
-          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 placeholder-yellow-500 placeholder-opacity-100"
-          placeholder="Add a comment"
-          value={newComment.content}
-          onChange={(e) => setNewComment({ ...newComment, content: e.target.value })}
-          rows={4}
-        />
-        <button
-          type="submit"
-          className="w-full px-4 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors duration-200 shadow-md"
+        <h3 className="text-2xl font-bold text-yellow-500 mb-6">Discussion</h3>
+
+        {/* Comment Form */}
+        <motion.form
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          onSubmit={handleAddComment}
+          className="relative"
         >
-          Comment
-        </button>
-      </form>
+          <textarea
+            className="w-full p-4 rounded-xl bg-gray-900/50 border border-gray-700/50 focus:border-yellow-500 
+            focus:ring-2 focus:ring-yellow-500/20 text-gray-200 placeholder-gray-500 transition-all duration-200"
+            placeholder="Share your thoughts..."
+            value={newComment.content}
+            onChange={(e) => setNewComment({ ...newComment, content: e.target.value })}
+            rows={3}
+          />
+          <button
+            type="submit"
+            className="absolute bottom-4 right-4 p-2 rounded-lg bg-yellow-500 text-gray-900 
+            hover:bg-yellow-400 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!newComment.content.trim()}
+          >
+            <FiSend className="w-5 h-5" />
+          </button>
+        </motion.form>
+      </div>
 
-      {comments.map((comment) => (
-        <div
-          key={comment._id}
-          className="p-5 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 space-y-3"
-        >
-          {editingCommentId === comment._id ? (
-            <form onSubmit={handleUpdateComment} className="space-y-3">
-              <textarea
-                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200"
-                value={updatedComment.content}
-                onChange={(e) => setUpdatedComment({ content: e.target.value })}
-                rows={3}
-              />
-              <div className="space-x-3">
-                <button
-                  type="submit"
-                  className="px-5 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors duration-200"
-                >
-                  Update
-                </button>
-                <button
-                  type="button"
-                  className="px-5 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200"
-                  onClick={() => setEditingCommentId(null)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          ) : (
-            <>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                <strong>Author: {authorNames[comment._id]}</strong>
-              </p>
-              <p className="text-gray-800 dark:text-gray-300 text-base">{comment.content}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Likes: {comment.likes}</p>
+      {/* Comments List */}
+      <div className="comment lg:w-[50%] flex flex-col gap-4">
 
-              <div className="space-x-3">
-                <button
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200"
-                  onClick={() => handleLike(comment._id)}
-                >
-                  Like
-                </button>
-                {comment.author === user.userid &&
+        <AnimatePresence>
+          {comments && comments.map((comment, index) => (
+            <motion.div
+              key={comment._id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ delay: index * 0.1 }}
+              className="group relative p-6 rounded-xl bg-gray-900/30 border border-gray-700/50 
+              hover:bg-gray-900/50 transition-all duration-200"
+            >
+              {editingCommentId === comment._id ? (
+                <form onSubmit={handleUpdateComment} className="space-y-4">
+                  <textarea
+                    className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-yellow-500 
+                    focus:ring-2 focus:ring-yellow-500/20 text-gray-200"
+                    value={updatedComment.content}
+                    onChange={(e) => setUpdatedComment({ content: e.target.value })}
+                    rows={3}
+                  />
+                  <div className="flex gap-3">
+                    <button
+                      type="submit"
+                      className="px-4 py-2 rounded-lg bg-yellow-500 text-gray-900 hover:bg-yellow-400 
+                      transition-colors duration-200"
+                    >
+                      Update
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEditingCommentId(null)}
+                      className="px-4 py-2 rounded-lg bg-gray-700 text-gray-200 hover:bg-gray-600 
+                      transition-colors duration-200"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 
+                      flex items-center justify-center text-gray-900 font-bold text-lg">
+                        {authorNames[comment._id]?.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-gray-200">{authorNames[comment._id]}</h4>
+                        <p className="text-sm text-gray-400">
+                          {new Date(comment.createdAt).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                          })}
+                        </p>
+                      </div>
+                    </div>
+
+                    {comment && comment.author === user.userid && (
+                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <button
+                          onClick={() => handleEditComment(comment._id, comment.content)}
+                          className="p-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-yellow-500 
+                          transition-colors duration-200"
+                        >
+                          <FiEdit2 className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteComment(comment._id)}
+                          className="p-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-red-500 
+                          transition-colors duration-200"
+                        >
+                          <FiTrash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <p className="text-gray-300 mb-4">{comment.content}</p>
+
                   <button
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
-                    onClick={() => handleDeleteComment(comment._id)}
+                    onClick={() => handleLike(comment._id)}
+                    className="flex items-center gap-2 text-sm text-gray-400 hover:text-yellow-500 
+                    transition-colors duration-200"
                   >
-                    Delete
+                    <FiHeart className={`w-4 h-4 ${comment.likes ? 'fill-yellow-500 text-yellow-500' : ''}`} />
+                    <span>{comment.likes || 0} likes</span>
                   </button>
-                }
-              </div>
-            </>
-          )}
-        </div>
-      ))}
+                </>
+              )}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+
     </div>
   );
 }
