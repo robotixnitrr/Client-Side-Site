@@ -1,0 +1,217 @@
+.con1 {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fbbf24;
+    font-size: 4rem;
+    font-weight: bold;
+    color: black;
+    flex-direction: column;
+}
+.con1 h2 {
+    width: 150px;
+    height: 3px;
+    background-color: black;
+}
+.steeringBody {
+    background-color: #dddddd;
+    /* height: 800px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.steeringBody .section-header h2 {
+    margin: 0;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    position: relative;
+    font-size: 50px;
+    font-weight: 700;
+    color: #030f27;
+}
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-right: -15px;
+    margin-left: -15px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.teamItem1 {
+    position: relative;
+    margin-bottom: 30px;
+    width: 300px;
+    height: 500px;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.teamImg1 {
+    position: relative;
+    height: 256px;
+    /* object-fit: inherit; */
+}
+
+.teamText1 {
+    position: relative;
+    padding: 25px 15px;
+    text-align: center;
+    background: #030f27;
+    color: rgb(163, 163, 163);
+    transition: 0.4s;
+}
+
+.teamText1:hover {
+    cursor: pointer;
+    background: #fdbe33;
+    color: rgb(72, 71, 71);
+}
+
+.teamText1:hover h2 {
+    color: #030f27;
+    font-size: 27px;
+}
+
+.teamText1 h2 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+    color: #fdbe33;
+    transition: 0.4s;
+}
+
+
+
+.teamItem2 {
+    position: relative;
+    margin-bottom: 30px;
+    width: 300px;
+    height: 500px;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.teamImg2 {
+    position: relative;
+    height: 256px;
+    
+}
+
+.teamText2 {
+    position: relative;
+    padding: 25px 15px;
+    text-align: center;
+    background: #fdbe33;
+    color: rgb(72, 71, 71);
+    transition: 0.4s;
+}
+
+.teamText2:hover {
+    cursor: pointer;
+    background-color: #dddddd;
+}
+
+.teamText2:hover h2 {
+    font-size: 27px;
+}
+
+.teamText2 h2 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+    color: #030f27;
+    transition: 0.4s;
+}
+
+.headCoordinators {
+    background-color: #030f27;
+    /* height: 200px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.headCoordinators .section-header h2 {
+    margin: 0;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    position: relative;
+    font-size: 50px;
+    font-weight: 700;
+    color: #dddddd;
+}   
+
+.coreCoordinators {
+    background-color: #dddddd;
+    /* height: 200px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.coreCoordinators .section-header h2 {
+    margin: 0;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    position: relative;
+    font-size: 50px;
+    font-weight: 700;
+    color: #030f27;
+}
+
+.executive {
+    background-color: #030f27;
+    /* height: 200px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.executive .section-header h2 {
+    margin: 0;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    position: relative;
+    font-size: 50px;
+    font-weight: 700;
+    color: #dddddd;
+}
+
+.teamItem3 {
+    position: relative;
+    /* margin-bottom: 10px; */
+    width: 300px;
+    height: 280px;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.members {
+    background-color: #dddddd;
+    /* height: 200px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.members .section-header h2 {
+    margin: 0;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    position: relative;
+    font-size: 50px;
+    font-weight: 700;
+    color: #030f27;
+}
