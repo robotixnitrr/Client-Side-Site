@@ -13,6 +13,7 @@ import CreatePost from './pages/CreatePost';
 import UpdatePost from './pages/UpdatePost';
 import Post from './pages/Post';
 import PostPage from './pages/PostPage';
+import Team from './pages/Team';
 
 // import OnlyAdmin from './components/OnlyAdmin';
 import PrivateRoute from './components/PrivateRoute';
@@ -31,6 +32,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/team" element={<Team />} />
               <Route path="/events" element={<EventsPage />} />
               <Route path="/projects" element={<ProjectsPage />} />
               <Route path="/workshops" element={<WorkshopsPage />} />
