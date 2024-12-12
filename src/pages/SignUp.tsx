@@ -43,6 +43,7 @@ export default function Signup() {
     }
 
     try {
+      // console.log("response");
       const response = await signup({ username, email, password });
       dispatch(signInSuccess([response.data.userId, response.data.username]));
       await directLogin();

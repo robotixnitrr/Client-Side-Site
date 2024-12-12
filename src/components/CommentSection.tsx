@@ -26,13 +26,13 @@ export default function CommentSection({ postId }: CommentSectionProps) {
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [updatedComment, setUpdatedComment] = useState<{ content: string }>({ content: '' });
   const [authorNames, setAuthorNames] = useState<AuthorNames>({});
-  console.log(postId);
+  // console.log(postId);
 
 
   useEffect(() => {
     const fetchAuthorNames = async () => {
       const namesMap = { ...authorNames };
-      await Promise.all(
+      comments ? await Promise.all(
         comments.map(async (comment) => {
           if (!namesMap[comment._id]) {
             try {
@@ -43,7 +43,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
             }
           }
         })
-      );
+      ) : null;
       setAuthorNames(namesMap);
     };
     fetchAuthorNames();
@@ -53,12 +53,14 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     getCommentsForPost(postId)
       .then((response) => setComments(response.data.data))
       .catch((error: Error) => console.log(error.message));
-    console.log(comments);
+    // console.log(comments);
 
   }, [postId]);
 
   const handleAddComment = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(user);
+    console.log(newComment);
     if (!newComment.content.trim() || !user?.userid) return;
 
     try {
@@ -67,6 +69,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
         author: user.userid,
         postId: postId
       };
+      console.log(commentData);
 
       const response = await createComment(commentData);
       console.log("New comment response:", response.data);

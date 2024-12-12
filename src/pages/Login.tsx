@@ -32,6 +32,8 @@ const Login = () => {
       const response = await login({ email, password });
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
+        console.log(response.data);
+        
         dispatch(signInSuccess([response.data.userId, response.data.username]));
         navigate('/');
       }
