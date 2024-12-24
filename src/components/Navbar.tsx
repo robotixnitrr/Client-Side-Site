@@ -83,18 +83,11 @@ const Navbar = () => {
             {!token ? (
               <div className="flex items-center space-x-4">
                 <Link 
-                  to="/log-in" 
-                  className="text-gray-900 border-2 border-gray-900 px-4 py-2 rounded-lg 
-                    hover:bg-gray-900 hover:text-amber-400 transition-all font-semibold"
-                >
-                  Login
-                </Link>
-                <Link 
-                  to="/sign-up" 
+                  to="/auth" 
                   className="bg-gray-900 text-amber-400 px-4 py-2 rounded-lg 
                     hover:bg-gray-800 transition-colors font-semibold shadow-md"
                 >
-                  Register
+                  Sign In
                 </Link>
               </div>
             ) : (

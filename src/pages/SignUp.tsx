@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { login, signup } from '../api/authApi';
-import { useDispatch } from 'react-redux';
-import { signInSuccess } from '../redux/user/userSlice';
-import { motion } from 'framer-motion';
-import { FiMail, FiLock, FiUser, FiArrowRight } from 'react-icons/fi';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { login, signup } from "../api/authApi";
+import { useDispatch } from "react-redux";
+import { signInSuccess } from "../redux/user/userSlice";
+import { motion } from "framer-motion";
+import { FiMail, FiLock, FiUser, FiArrowRight } from "react-icons/fi";
 
 interface ApiError {
   response?: {
@@ -16,11 +16,11 @@ interface ApiError {
 }
 
 export default function Signup() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,16 +28,16 @@ export default function Signup() {
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     if (!username || !email || !password || !confirmPassword) {
-      setError('All fields are required');
+      setError("All fields are required");
       setIsLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       setIsLoading(false);
       return;
     }
@@ -58,8 +58,8 @@ export default function Signup() {
     try {
       const response = await login({ email, password });
       if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        navigate('/');
+        localStorage.setItem("token", response.data.token);
+        navigate("/");
       }
     } catch (err) {
       const error = err as ApiError;
@@ -69,21 +69,23 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 px-4">
-      <motion.div 
+    <div className="flex items-center justify-center px-4">
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="bg-gray-800 rounded-2xl shadow-2xl p-8 space-y-8">
-          <motion.div 
+        <div className="bg-gray-800 rounded-2xl shadow-2xl px-8 py-1 pb-8 space-y-8">
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
             className="text-center"
           >
-            <h2 className="text-4xl font-bold text-yellow-500 mb-2">Create Account</h2>
+            <h2 className="text-4xl font-bold text-yellow-500 mb-2">
+              Create Account
+            </h2>
             <p className="text-gray-400">Join the Robotix Club community</p>
           </motion.div>
 
@@ -154,9 +156,11 @@ export default function Signup() {
               type="submit"
               disabled={isLoading}
               className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center space-x-2
-                ${isLoading 
-                  ? 'bg-yellow-600 cursor-not-allowed' 
-                  : 'bg-yellow-500 hover:bg-yellow-600'} 
+                ${
+                  isLoading
+                    ? "bg-yellow-600 cursor-not-allowed"
+                    : "bg-yellow-500 hover:bg-yellow-600"
+                } 
                 text-white transition-colors`}
             >
               {isLoading ? (
@@ -172,13 +176,10 @@ export default function Signup() {
 
           <div className="text-center">
             <p className="text-gray-400">
-              Already have an account?{' '}
-              <Link 
-                to="/log-in"
-                className="text-yellow-500 hover:text-yellow-400 font-medium transition-colors"
-              >
+              Already have an account?{" "}
+              <p className="text-yellow-500 hover:text-yellow-400 font-medium transition-colors">
                 Sign in
-              </Link>
+              </p>
             </p>
           </div>
         </div>

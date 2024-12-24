@@ -46,14 +46,14 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 px-4">
+    <div className="flex items-center justify-center px-4">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="bg-gray-800 rounded-2xl shadow-2xl p-8 space-y-8">
+        <div className="bg-gray-800 rounded-2xl shadow-2xl px-8 pb-16 py-1 space-y-8">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -122,18 +122,6 @@ const Login = () => {
               )}
             </motion.button>
           </form>
-
-          <div className="text-center">
-            <p className="text-gray-400">
-              New to Robotix Club?{' '}
-              <Link 
-                to="/sign-up"
-                className="text-yellow-500 hover:text-yellow-400 font-medium transition-colors"
-              >
-                Create an account
-              </Link>
-            </p>
-          </div>
         </div>
       </motion.div>
     </div>
