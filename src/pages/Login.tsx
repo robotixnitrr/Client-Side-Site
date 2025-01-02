@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/authApi';
 import { useDispatch } from "react-redux";
-import { signInSuccess } from '../redux/user/userSlice';
+import {  signInSuccess } from '../redux/user/userSlice';
 import { motion } from 'framer-motion';
 import { FiMail, FiLock, FiArrowRight } from 'react-icons/fi';
 
