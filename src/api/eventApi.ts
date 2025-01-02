@@ -3,23 +3,27 @@ import axios from 'axios';
 export interface Event {
   _id: string;
   title: string;
-  date: string;
+  date: Date;
   time: string;
-  location: string;
+  category: string;
+  venue: string;
   description: string;
-  image: string;
+  eventType: string;
+  imageUrl: string;
   capacity: number;
   registrationLink: string;
 }
 
 export interface NewEvent {
   title: string;
-  date: string;
+  date: Date | null;
   time: string;
-  location: string;
+  category: string;
+  venue: string;
   description: string;
-  image: string;
-  capacity: number;
+  eventType: string | null;
+  imageUrl: string;
+  capacity: Number | null;
   registrationLink: string;
 }
 
@@ -35,5 +39,5 @@ export const createEvent = (eventData: NewEvent) => {
 };
 
 export const getAllEvents = () => {
-  return axios.get<ApiResponse<Event[]>>(`${API_BASE_URL}`);
+  return axios.get(`${API_BASE_URL}`);
 }; 
