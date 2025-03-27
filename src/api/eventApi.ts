@@ -28,7 +28,7 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
-const API_BASE_URL = 'http://localhost:5000/api/events';
+const API_BASE_URL = `${import.meta.env.API_BASE_URL}/events`;
 
 export const createEvent = (eventData: NewEvent) => {
   return axios.post<ApiResponse<Event>>(`${API_BASE_URL}`, eventData);

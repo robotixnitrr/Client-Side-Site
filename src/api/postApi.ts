@@ -16,7 +16,7 @@ export interface ApiResponse<T> {
     message?: string;
 }
 
-const API_BASE_URL = 'http://localhost:5000/api/post';
+const API_BASE_URL = `${import.meta.env.API_BASE_URL}/post`;
 
 export const getAllPosts = (): Promise<AxiosResponse<ApiResponse<Post[]>>> => {
     return axios.get<ApiResponse<Post[]>>(`${API_BASE_URL}`);

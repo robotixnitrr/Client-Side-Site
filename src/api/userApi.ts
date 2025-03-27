@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 export interface User {
   _id: string;
@@ -12,7 +12,7 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
-const API_BASE_URL = 'http://localhost:5000/api/user';
+const API_BASE_URL = `${import.meta.env.API_BASE_URL}/user`;
 
 export const getUser = (userId: string) => {
   return axios.get<ApiResponse<User>>(`${API_BASE_URL}/${userId}`);
@@ -24,4 +24,4 @@ export const updateUser = (userId: string, userData: Partial<User>) => {
 
 export const deleteUser = (userId: string) => {
   return axios.delete<void>(`${API_BASE_URL}/${userId}`);
-}; 
+};

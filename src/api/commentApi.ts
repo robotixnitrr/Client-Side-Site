@@ -21,7 +21,7 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
-const API_BASE_URL = 'http://localhost:5000/api/comment';
+const API_BASE_URL = `${import.meta.env.API_BASE_URL}/comment`;
 
 export const createComment = (commentData: NewComment) => {
   return axios.post<ApiResponse<Comment>>(`${API_BASE_URL}`, commentData);
