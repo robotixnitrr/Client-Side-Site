@@ -16,7 +16,7 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
-const API_BASE_URL = 'http://localhost:5000/api/auth';
+const API_BASE_URL = import.meta.env.API_BASE_URL || 'http://localhost:5000/api/auth';
 
 export const login = (credentials: LoginCredentials) => {
   return axios.post<LoginResponse>(`${API_BASE_URL}/login`, credentials);
