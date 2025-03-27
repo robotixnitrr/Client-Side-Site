@@ -26,6 +26,7 @@ export default function Search() {
     const [showMore, setShowMore] = useState(true);
     const [limit, setLimit] = useState(10);
     const [limitPost, setLimitPost] = useState<Post[]>([]);
+    setLimit
 
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search);

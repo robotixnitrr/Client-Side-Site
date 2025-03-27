@@ -1,13 +1,20 @@
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { Spinner } from 'flowbite-react';
-import { motion } from 'framer-motion';
-import { FiEdit2, FiClock, FiTag, FiArrowLeft, FiUser, FiShare2 } from 'react-icons/fi';
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
-import { getAllPosts, getPost, Post } from '../api/postApi';
-import CommentSection from '../components/CommentSection';
-import PostCard from '../components/PostCard';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Spinner } from "flowbite-react";
+import { motion } from "framer-motion";
+import {
+  FiEdit2,
+  FiClock,
+  FiTag,
+  FiArrowLeft,
+  FiUser,
+  FiShare2,
+} from "react-icons/fi";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { getPost, Post } from "../api/postApi";
+import CommentSection from "../components/CommentSection";
+import PostCard from "../components/PostCard";
 
 export default function PostPage() {
   const { postId } = useParams();
@@ -18,6 +25,7 @@ export default function PostPage() {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   const userid = user.userid;
+  setRecentPost
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,21 +52,23 @@ export default function PostPage() {
     // console.log("Updated post:", post);
   }, [post]);
 
-  if (loading) return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="flex justify-center items-center min-h-screen bg-gray-900"
-    >
-      <Spinner size="xl" />
-    </motion.div>
-  );
+  if (loading)
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex justify-center items-center min-h-screen bg-gray-900"
+      >
+        <Spinner size="xl" />
+      </motion.div>
+    );
 
-  if (error || !post) return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900">
-      <p className="text-red-500">Failed to load post</p>
-    </div>
-  );
+  if (error || !post)
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-900">
+        <p className="text-red-500">Failed to load post</p>
+      </div>
+    );
 
   return (
     <motion.main
@@ -91,10 +101,12 @@ export default function PostPage() {
               </button>
             )}
             <button
-              onClick={() => navigator.share({
-                title: post.title,
-                url: window.location.href
-              })}
+              onClick={() =>
+                navigator.share({
+                  title: post.title,
+                  url: window.location.href,
+                })
+              }
               className="p-2 text-gray-400 hover:text-yellow-500 transition-colors duration-200"
             >
               <FiShare2 className="w-5 h-5" />
@@ -117,18 +129,21 @@ export default function PostPage() {
         <div className="relative h-full max-w-4xl mx-auto px-4 flex flex-col justify-end pb-16">
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-1 bg-yellow-500/90 text-gray-900 
-                px-3 py-1 rounded-full text-sm font-medium">
+              <span
+                className="inline-flex items-center gap-1 bg-yellow-500/90 text-gray-900 
+                px-3 py-1 rounded-full text-sm font-medium"
+              >
                 <FiTag className="w-4 h-4" />
                 {post.category}
               </span>
               <span className="text-gray-300 text-sm flex items-center gap-1">
                 <FiClock className="w-4 h-4" />
-                {post.updatedAt && new Date(post.updatedAt).toLocaleDateString()}
+                {post.updatedAt &&
+                  new Date(post.updatedAt).toLocaleDateString()}
               </span>
               <span className="text-gray-300 text-sm flex items-center gap-1">
                 <FiUser className="w-4 h-4" />
-                {post.author || 'Anonymous'}
+                {post.author || "Anonymous"}
               </span>
             </div>
 
@@ -142,7 +157,6 @@ export default function PostPage() {
       {/* Content Section */}
       <div className=" px-4 py-12">
         <div className="max-w-4xl mx-auto">
-
           <motion.article
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -172,7 +186,9 @@ export default function PostPage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <h2 className="text-2xl font-bold text-yellow-500 mb-8">More Posts</h2>
+            <h2 className="text-2xl font-bold text-yellow-500 mb-8">
+              More Posts
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recentPosts.map((recentPost) => (
                 <PostCard key={recentPost._id} post={recentPost} />

@@ -1,23 +1,21 @@
-import { useEffect, useState } from 'react';
-import logoBlack from '../assets/logoBlack.png'
-import { useSelector, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { logout } from '../redux/user/userSlice';
-import type { RootState } from '../redux/store';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from "react";
+import logoBlack from "../assets/logoBlack.png";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../redux/user/userSlice";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
-  const user = useSelector((state: RootState) => state.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   const handleLogout = () => {
     dispatch(logout());
-    localStorage.removeItem('token');
-    navigate('/');
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (
@@ -30,10 +28,13 @@ const Navbar = () => {
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo Section */}
-          <Link to="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity">
-            <img 
-              src={logoBlack} 
-              alt="Logo" 
+          <Link
+            to="/"
+            className="flex items-center space-x-3 hover:opacity-90 transition-opacity"
+          >
+            <img
+              src={logoBlack}
+              alt="Logo"
               className="w-16 h-16 object-contain"
             />
             <span className="text-2xl font-bold text-gray-900 hidden sm:block">
@@ -43,47 +44,47 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="text-gray-900 hover:text-gray-700 font-semibold transition-colors px-3 py-2 rounded-md"
             >
               Home
             </Link>
-            <Link 
-              to="/about" 
+            <Link
+              to="/about"
               className="text-gray-900 hover:text-gray-700 font-semibold transition-colors px-3 py-2 rounded-md"
             >
               About Us
             </Link>
-            <Link 
-              to="/events" 
+            <Link
+              to="/events"
               className="text-gray-900 hover:text-gray-700 font-semibold transition-colors px-3 py-2 rounded-md"
             >
               Events
             </Link>
-            <Link 
-              to="/projects" 
+            <Link
+              to="/projects"
               className="text-gray-900 hover:text-gray-700 font-semibold transition-colors px-3 py-2 rounded-md"
             >
               Projects
             </Link>
-            <Link 
-              to="/workshops" 
+            <Link
+              to="/workshops"
               className="text-gray-900 hover:text-gray-700 font-semibold transition-colors px-3 py-2 rounded-md"
             >
               Workshops
             </Link>
-            <Link 
-              to="/post" 
+            <Link
+              to="/post"
               className="text-gray-900 hover:text-gray-700 font-semibold transition-colors px-3 py-2 rounded-md"
             >
               Blog
             </Link>
-            
+
             {!token ? (
               <div className="flex items-center space-x-4">
-                <Link 
-                  to="/auth" 
+                <Link
+                  to="/auth"
                   className="bg-gray-900 text-amber-400 px-4 py-2 rounded-lg 
                     hover:bg-gray-800 transition-colors font-semibold shadow-md"
                 >
@@ -92,8 +93,8 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-4">
-                <Link 
-                  to="/dashboard" 
+                <Link
+                  to="/dashboard"
                   className="bg-gray-900 text-amber-400 px-4 py-2 rounded-lg 
                     hover:bg-gray-800 transition-colors font-semibold shadow-md"
                 >
@@ -115,11 +116,26 @@ const Navbar = () => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden p-2 rounded-md text-gray-900 hover:bg-amber-500 transition-colors"
           >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
               {isMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               )}
             </svg>
           </button>
@@ -136,40 +152,40 @@ const Navbar = () => {
               className="md:hidden py-4 bg-amber-300 rounded-b-lg shadow-lg"
             >
               <div className="flex flex-col space-y-3 px-4">
-                <Link 
-                  to="/" 
+                <Link
+                  to="/"
                   className="text-gray-900 hover:bg-amber-400 px-3 py-2 rounded-md font-semibold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Home
                 </Link>
-                <Link 
-                  to="/about" 
+                <Link
+                  to="/about"
                   className="text-gray-900 hover:bg-amber-400 px-3 py-2 rounded-md font-semibold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   About Us
                 </Link>
-                <Link 
-                  to="/post" 
+                <Link
+                  to="/post"
                   className="text-gray-900 hover:bg-amber-400 px-3 py-2 rounded-md font-semibold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Blog
                 </Link>
-                
+
                 {!token ? (
                   <div className="flex flex-col space-y-2 pt-2 border-t border-amber-400">
-                    <Link 
-                      to="/log-in" 
+                    <Link
+                      to="/log-in"
                       className="text-gray-900 border-2 border-gray-900 px-4 py-2 rounded-lg 
                         hover:bg-gray-900 hover:text-amber-400 transition-all font-semibold text-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Login
                     </Link>
-                    <Link 
-                      to="/sign-up" 
+                    <Link
+                      to="/sign-up"
                       className="bg-gray-900 text-amber-400 px-4 py-2 rounded-lg 
                         hover:bg-gray-800 transition-colors font-semibold text-center shadow-md"
                       onClick={() => setIsMenuOpen(false)}
@@ -179,8 +195,8 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col space-y-2 pt-2 border-t border-amber-400">
-                    <Link 
-                      to="/dashboard" 
+                    <Link
+                      to="/dashboard"
                       className="bg-gray-900 text-amber-400 px-4 py-2 rounded-lg 
                         hover:bg-gray-800 transition-colors font-semibold text-center shadow-md"
                       onClick={() => setIsMenuOpen(false)}

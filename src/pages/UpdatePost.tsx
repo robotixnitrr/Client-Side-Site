@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { deletePost, getPost, updatePost, Post, ApiResponse } from '../api/postApi';
-import { AxiosResponse } from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  deletePost,
+  getPost,
+  updatePost,
+  Post,
+  ApiResponse,
+} from "../api/postApi";
+import { AxiosResponse } from "axios";
 
 interface UpdatedPost {
   title: string;
@@ -13,12 +19,15 @@ interface UpdatedPost {
 export default function UpdatePost() {
   const navigate = useNavigate();
   const { postId } = useParams();
-  const [updatedPost, setUpdatedPost] = useState<UpdatedPost>({ 
-    title: '', content: '', author: '', category: '' 
+  const [updatedPost, setUpdatedPost] = useState<UpdatedPost>({
+    title: "",
+    content: "",
+    author: "",
+    category: "",
   });
   const [post, setPost] = useState<Post | null>(null);
   const [error, setError] = useState<string | null>(null);
-
+  error;
   const handleUpdatePost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -30,7 +39,7 @@ export default function UpdatePost() {
         }
       }
     } catch (err) {
-      console.log('Error updating post:', err);
+      console.log("Error updating post:", err);
     }
   };
 
@@ -38,10 +47,10 @@ export default function UpdatePost() {
     try {
       if (postId) {
         await deletePost(postId);
-        navigate('/post');
+        navigate("/post");
       }
     } catch (err) {
-      console.log('Error deleting post:', err);
+      console.log("Error deleting post:", err);
     }
   };
 
@@ -58,8 +67,8 @@ export default function UpdatePost() {
           });
         })
         .catch((err: Error) => {
-          console.error('Error fetching post:', err);
-          setError('Failed to fetch post details');
+          console.error("Error fetching post:", err);
+          setError("Failed to fetch post details");
         });
     }
   }, [postId]);
@@ -70,16 +79,21 @@ export default function UpdatePost() {
 
   return (
     <>
+      <form
+        onSubmit={handleUpdatePost}
+        className="max-w-lg mx-auto p-6 bg-gray-900 shadow-lg rounded-lg"
+      >
+        <h2 className="text-2xl font-semibold mb-6 text-center text-yellow-500">
+          Update Post
+        </h2>
 
-      <form onSubmit={handleUpdatePost} className="max-w-lg mx-auto p-6 bg-gray-900 shadow-lg rounded-lg">
-        
-        <h2 className="text-2xl font-semibold mb-6 text-center text-yellow-500">Update Post</h2>
-        
         <input
           type="text"
           placeholder="Title"
           value={updatedPost.title}
-          onChange={(e) => setUpdatedPost({ ...updatedPost, title: e.target.value })}
+          onChange={(e) =>
+            setUpdatedPost({ ...updatedPost, title: e.target.value })
+          }
           className="w-full mb-4 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-yellow-500 transition-all duration-200 placeholder-yellow-500 placeholder-opacity-100 bg-gray-800"
           required
         />
@@ -88,7 +102,9 @@ export default function UpdatePost() {
           type="text"
           placeholder="Category"
           value={updatedPost.category}
-          onChange={(e) => setUpdatedPost({ ...updatedPost, category: e.target.value })}
+          onChange={(e) =>
+            setUpdatedPost({ ...updatedPost, category: e.target.value })
+          }
           className="w-full mb-4 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-yellow-500 transition-all duration-200 placeholder-yellow-500 placeholder-opacity-100 bg-gray-800"
           required
         />
@@ -96,12 +112,14 @@ export default function UpdatePost() {
         <textarea
           placeholder="Content"
           value={updatedPost.content}
-          onChange={(e) => setUpdatedPost({ ...updatedPost, content: e.target.value })}
+          onChange={(e) =>
+            setUpdatedPost({ ...updatedPost, content: e.target.value })
+          }
           className="w-full mb-4 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-yellow-500 transition-all duration-200 placeholder-yellow-500 placeholder-opacity-100 bg-gray-800"
           rows={5}
           required
         />
-{/* 
+        {/* 
         <input
           type="text"
           placeholder="Author Name"

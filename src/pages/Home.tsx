@@ -75,7 +75,7 @@ function Home() {
     });
   };
 
-  const spaceRef = useRef<HTMLDivElement>(null);
+  // const spaceRef = useRef<HTMLDivElement>(null);
   const planetsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const planets = [

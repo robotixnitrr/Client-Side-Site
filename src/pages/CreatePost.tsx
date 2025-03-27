@@ -1,68 +1,74 @@
-import React, { useState, useEffect } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
-import { createPost, getAllPosts } from '../api/postApi';
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
-import { AxiosResponse } from 'axios';
-import type { Post, ApiResponse } from '../api/postApi';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { Editor } from "@tinymce/tinymce-react";
+import { createPost, getAllPosts } from "../api/postApi";
+import { useSelector } from "react-redux";
+// import { useNavigate } from 'react-router-dom';
+import { AxiosResponse } from "axios";
+import type { Post, ApiResponse } from "../api/postApi";
+import { motion } from "framer-motion";
 
 interface RootState {
   user: {
     userid: string;
-  }
+  };
 }
 
 export default function CreatePost() {
   const user = useSelector((state: RootState) => state.user);
   const [posts, setPosts] = useState<Post[]>([]);
-  const [post, setPost] = useState({ title: '', content: '', author: user.userid, category: '', imageUrl: '' });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const navigate = useNavigate();
+  const [post, setPost] = useState({
+    title: "",
+    content: "",
+    author: user.userid,
+    category: "",
+    imageUrl: "",
+  });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  // const navigate = useNavigate();
   // console.log(user);
-  // console.log(post);
-
+  console.log(posts);
 
   useEffect(() => {
     getAllPosts()
-      .then((response: AxiosResponse<ApiResponse<Post[]>>) => setPosts(response.data.data))
+      .then((response: AxiosResponse<ApiResponse<Post[]>>) =>
+        setPosts(response.data.data)
+      )
       .catch((error: Error) => {
-        console.error('Error fetching posts:', error);
-        setError('Failed to fetch posts');
+        console.error("Error fetching posts:", error);
+        setError("Failed to fetch posts");
       });
   }, []);
 
   const handleCreatePost = async (postData: Partial<Post>) => {
-    const cleanContent = postData.content?.replace(/<p>/g, '').replace(/<\/p>/g, '');
+    const cleanContent = postData.content
+      ?.replace(/<p>/g, "")
+      .replace(/<\/p>/g, "");
 
     const dataToSend = { ...postData, content: cleanContent };
     // console.log(dataToSend);
 
-
     try {
       const response = await createPost(dataToSend);
       console.log(response);
-      
+
       // setPosts([response.data.data, ...posts]);
 
-      setSuccess('Post created successfully!');
+      setSuccess("Post created successfully!");
       console.log("sucess");
-      
-      setError('');
+
+      setError("");
       // setPost({ title: '', content: '', author: '', category: '', imageUrl: '' });
       console.log("sucess1");
-      navigate(`/post/${response.data._id}`);
-
+      // navigate(`/post/${response.data._id}`);
     } catch (error) {
-      console.error('Error creating post:', error);
-      setError('Failed to create post');
-      setSuccess('');
+      console.error("Error creating post:", error);
+      setError("Failed to create post");
+      setSuccess("");
     }
   };
 
   // console.log(user);
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,7 +81,6 @@ export default function CreatePost() {
     handleCreatePost(post);
   };
 
-
   const handleContentChange = (content: string) => {
     setPost({ ...post, content });
   };
@@ -86,7 +91,6 @@ export default function CreatePost() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-
       <motion.form
         initial={{ y: 20 }}
         animate={{ y: 0 }}
@@ -94,23 +98,28 @@ export default function CreatePost() {
         onSubmit={handleSubmit}
         className="max-w-lg mx-auto p-6 bg-gray-900 shadow-lg rounded-lg"
       >
+        <h2 className="text-2xl font-semibold mb-6 mt-1 text-center text-yellow-500">
+          Create a New Post
+        </h2>
 
-        <h2 className="text-2xl font-semibold mb-6 mt-1 text-center text-yellow-500">Create a New Post</h2>
-
-        {error && <motion.p
-          initial={{ x: -20 }}
-          animate={{ x: 0 }}
-          className="text-red-500 text-center -4"
-        >
-          {error}
-        </motion.p>}
-        {success && <motion.p
-          initial={{ x: -20 }}
-          animate={{ x: 0 }}
-          className="text-green-500 text-center mb-4"
-        >
-          {success}
-        </motion.p>}
+        {error && (
+          <motion.p
+            initial={{ x: -20 }}
+            animate={{ x: 0 }}
+            className="text-red-500 text-center -4"
+          >
+            {error}
+          </motion.p>
+        )}
+        {success && (
+          <motion.p
+            initial={{ x: -20 }}
+            animate={{ x: 0 }}
+            className="text-green-500 text-center mb-4"
+          >
+            {success}
+          </motion.p>
+        )}
 
         <input
           type="text"
@@ -158,14 +167,14 @@ export default function CreatePost() {
               height: 400,
               menubar: true,
               plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount',
+                "advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table paste code help wordcount",
               ],
               toolbar:
-                'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-              skin: 'oxide-dark',
-              content_css: 'dark',
+                "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
+              skin: "oxide-dark",
+              content_css: "dark",
             }}
           />
         </div>
